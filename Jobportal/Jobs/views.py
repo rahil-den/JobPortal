@@ -64,7 +64,7 @@ def signin(request):
         email=request.POST['email']
         password=request.POST['pass']
         # pas1=request.POST['pass1']
-        file=request.FILES['file']
+        file=request.POST['file']
         r=Signin.objects.create(name=name,email=email,password=password,file=file)
         messages.info(request,'A user has been added')
         return redirect('/index/')
