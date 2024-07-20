@@ -1,9 +1,13 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib import messages
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
-# Create your views here.
+from django.contrib.auth import authenticate, login,logout
+
 
 
 def index(request):
@@ -37,8 +41,8 @@ def job_listings(request):
 def job_single(request):
     return render(request,'job-single.html')
 
-def login(request):
-    return render(request,'login.html')
+# def login(request):
+#     return render(request,'login.html')
 
 def portfolio_single(request):
     return render(request,'portfolio-single.html')
@@ -58,17 +62,68 @@ def services(request):
 def testimonials(request):
     return render(request,'testimonials.html')
 
-def signin(request):
-    if request.method == 'POST':
-        name=request.POST['name']
-        email=request.POST['email']
-        password=request.POST['pass']
-        # pas1=request.POST['pass1']
-        file=request.POST['file']
-        r=Signin.objects.create(name=name,email=email,password=password,file=file)
-        messages.info(request,'A user has been added')
-        return redirect('/index/')
-    return render(request,'signup.html')
+# def signin(request):
+#     if request.method == 'POST':
+#         name=request.POST['name']
+#         email=request.POST['email']
+#         password=request.POST['password']
+#         pas1=request.POST['cpassword']
+#         file=request.FILES['file']
+#         if password != pas1:
+#             messages.info(request,'Wrong Password bud')
+#             return render(request,'signup.html')
+#         else:
+#             r=Signin.objects.create(name=name,email=email,password=password,file=file)
+#             r.set_password(password)
+#             r.save()
+#             messages.info(request,'A user has been added')
+#             return redirect('/index/')
+#     return render(request,'signup.html')
 
-def read(request):
-    return render()
+def register(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        cpassword = request.POST.get('cpassword')
+        
+        if 'file' in request.FILES:
+            cv = request.FILES['file']
+        else:
+            cv = None
+        
+        if User.objects.filter(name=name).exists():
+            messages.error(request, 'Username is already taken')
+            return render(request, 'signup.html')
+
+        if password != cpassword:
+            messages.error(request, 'Passwords do not match')
+            return render(request, 'signup.html')
+
+        # Create the user
+        user = User.objects.create_user(name=name, email=email, password=password)
+
+        # Create the Signin instance
+        signin = Signin(user=user, file=cv)
+        signin.save()
+
+        messages.success(request, 'Successfully registered')
+        return redirect('/index/')  # Redirect to your desired URL after successful registration
+
+    return render(request, 'signup.html')
+
+def user_login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            # Redirect to the desired URL after login
+            return redirect('/index/')
+        else:
+            messages.error(request, 'Invalid email or password. Please try again.')
+
+    return render(request, 'login.html')

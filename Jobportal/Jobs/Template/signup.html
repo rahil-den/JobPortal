@@ -96,7 +96,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-            <h1 class="text-white font-weight-bold">Sign Up/Login</h1>
+            <h1 class="text-white font-weight-bold">Sign Up</h1>
             <div class="custom-breadcrumbs">
               <a href="#">Home</a> <span class="mx-2 slash">/</span>
               <span class="text-white"><strong>Log In</strong></span>
@@ -111,6 +111,11 @@
         <div class="row">
           <div class="col-lg-6 mb-5">
             <h2 class="mb-4">Sign Up To JobBoard</h2>
+            {% for msg in messages %}
+            <script>
+              alert("{{msg}}")
+            </script>
+            {% endfor%}
             <form action="#" method="POST" class="p-4 border rounded" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="row form-group">
@@ -128,15 +133,15 @@
               <div class="row form-group">
                 <div class="col-md-12 mb-3 mb-md-0">
                   <label class="text-black" for="fname">Password</label>
-                  <input type="password" id="fname" class="form-control" placeholder="Password" name="pass">
+                  <input type="password" id="fname" class="form-control" placeholder="Password" name="password">
                 </div>
               </div>
-              <!-- <div class="row form-group mb-4">
+              <div class="row form-group mb-4">
                 <div class="col-md-12 mb-3 mb-md-0">
                   <label class="text-black" for="fname">Re-Type Password</label>
-                  <input type="password" id="fname" class="form-control" placeholder="Re-type Password" name="pass1">
+                  <input type="password" id="fname" class="form-control" placeholder="Re-type Password" name="cpassword">
                 </div>
-              </div> -->
+              </div>
               <div class="row form-group mb-4">
                 <div class="col-md-12 mb-3 mb-md-0">
                   <label class="text-black" for="fname">Your CV</label>

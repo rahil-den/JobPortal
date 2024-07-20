@@ -1,16 +1,65 @@
 from django.db import models
+from django.utils import timezone
+from django.conf import settings
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
-# Create your models here.
 
-class Signin(models.Model):
-    name=models.CharField(max_length=100)
-    email=models.EmailField()
-    password=models.CharField(max_length=120,null=False,blank=False)
-    file=models.FileField(upload_to="userfile")
+class CustomUserManager(BaseUserManager):
+    def _create_user(self, email, password, **extra_fields):
+        if not email:
+            raise ValueError("You must provide an email address")
+        
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        
+        return user
+
+    def create_user(self, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self._create_user(email, password, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=255, blank=True, default='')
+
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    date_joined = models.DateTimeField(default=timezone.now)
+    last_login = models.DateTimeField(blank=True, null=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     class Meta:
-        db_table="SIGNIN"
-        verbose_name="Signin"
-        verbose_name_plural="signin"
-    def __str__(self):
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
+    def get_full_name(self):
         return self.name
+
+    def get_short_name(self):
+        return self.name or self.email.split('@')[0]
+
+class Signin(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    file = models.FileField(upload_to="userfiles")
+
+    class Meta:
+        db_table = "signin"
+        verbose_name = "Signin"
+        verbose_name_plural = "Signins"
+
+    def __str__(self):
+        return self.user.email
