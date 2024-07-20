@@ -69,3 +69,6 @@ def signin(request):
         messages.info(request,'A user has been added')
         return redirect('/index/')
     return render(request,'signup.html')
+
+def read(request):
+    return render()
