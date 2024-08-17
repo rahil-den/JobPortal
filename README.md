@@ -1,0 +1,1 @@
+The last commit, where am in a problem the read function aint happening properly like i am reading all the users where it's just should be the signin users not admins too... able to delete and yes not able to see the CV files innit... 17/08/2024 date of today... Error 3
