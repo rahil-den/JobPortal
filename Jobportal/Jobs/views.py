@@ -127,3 +127,20 @@ def user_login(request):
             messages.error(request, 'Invalid email or password. Please try again.')
 
     return render(request, 'login.html')
+
+# def Post(request):
+     
+#      return redirect('/portfolio/')
+def crud(request):
+    stu=User.objects.all()
+    context={
+        'stu':stu
+    }
+    return render(request,'crud.html',context)
+def delete_user(request,id):
+    stu=User.objects.get(id=id)
+    print(stu)
+    stu.delete()
+    return redirect('/Crud/')
+# def crud(request):
+#     return render(request,'crud.html')

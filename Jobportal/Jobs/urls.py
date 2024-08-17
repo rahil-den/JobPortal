@@ -19,7 +19,10 @@ urlpatterns = [
     path("service-single/",views.service_single),
     path("services/",views.services),
     path("testimonials/",views.testimonials),
-    path("signin/",views.register)
+    path("signin/",views.register),
+    path("Crud/",views.crud),
+    path('delete/<int:id>/',views.delete_user),
+    # path('update/<int:id>/',views.update),
 
 
     

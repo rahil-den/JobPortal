@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.contrib.sessions.models import Session
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 
@@ -63,3 +64,6 @@ class Signin(models.Model):
 
     def __str__(self):
         return self.user.email
+
+# class Postjob(models.Model):
+    
