@@ -1,1 +1,48 @@
-The last commit, where am in a problem the read function aint happening properly like i am reading all the users where it's just should be the signin users not admins too... able to delete and yes not able to see the CV files innit... 17/08/2024 date of today... Error 3
+# Job Portal
+Django Job Portal.       
+
+
+## Installation 
+
+```
+open terminal and type
+https://github.com/rahil-den/JobPortal.git
+
+or simply download using the url below
+https://github.com/rahil-den/JobPortal.git
+
+```
+
+## Install requirements
+
+```
+pip install -r requirements.txt
+```
+## Database
+
+```
+Set the database from settings.py
+```
+
+## To migrate the database open terminal in project directory and type
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+## Collects all static files in your apps
+
+```
+python manage.py collectstatic
+```
+
+## Run the server
+```
+python manage.py runserver
+```
+
+
+<div align="center">
+    <h3>========Thank You=========</h3>
+</div>
+
